@@ -19,7 +19,7 @@ The ReFuel app is a comprehensive application developed using the MERN (MongoDB,
    ```
 2. Navigate to the project directory:
    ```bash
-   cd ReFuel
+   cd ReFuel/Fuel-station-main
    ```
 3. Install dependencies for the backend:
    ```bash
