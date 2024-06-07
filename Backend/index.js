@@ -5,7 +5,6 @@ import userRoute from "./routes/userRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import fuelRoute from "./routes/fuelStationRoute.js";
 import paymentRoute from "./routes/paymentRoute.js";
-
 //import quantityRoute from "./routes/quantityRoute.js"
 import { dbconnect } from "./database/dbconnection.js";
 
@@ -29,7 +28,7 @@ app.use('/payment',paymentRoute);
 
 //app.use('/quantity', quantityRoute)
 
-const PORT=process.env.PORT || 5001;
+const PORT=process.env.PORT || 5000;
 
 app.listen(PORT, (req, res) => {
     console.log(`Server started on port:${PORT}`)

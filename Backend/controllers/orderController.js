@@ -2,12 +2,12 @@ import Order from "../models/order.js";
 import Station from "../models/fuelStation.js"
 
 export const addOrder = async (req, res) => {
-    const { address, fuel, method, userId, stationId } = req.body;
+    const { location, fuel, method, userId, stationId } = req.body;
     
     let order;
     try {
         order = await Order.create({
-            address,
+            location,
             fuel,
             method,
             userId,
@@ -95,11 +95,11 @@ export const addOrder = async (req, res) => {
 };
 
 export const updateOrder=async(req,res)=>{
- const {address,fuel,method}=req.body;
+ const {location,fuel,method}=req.body;
  let order;
  try {
     order=await Order.findByIdAndUpdate(req.params.id,{
-        address,
+        location,
         fuel,
         method
     })
