@@ -48,6 +48,3 @@ The ReFuel app is a comprehensive application developed using the MERN (MongoDB,
    npm start
    ```
 10. Open your web browser and access the application at [http://localhost:3000](http://localhost:3000).
-
-## License
-This project is licensed under the MIT License. By contributing to this project, you agree to license your contributions under the same license.
