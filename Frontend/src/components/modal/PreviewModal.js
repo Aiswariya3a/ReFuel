@@ -32,7 +32,7 @@ function PreviewModal({content,setOnCancel,setOnSubmit}){
                       Volume : {quantity.diesel.quantity}ltr
                     </p>
                     <p className="text-grey-dark font-thin text-sm leading-normal text-black">
-                    Distance : {distance} KM
+                      Distance : {distance} KM
                     </p>
                   </div>
                   <div className="flex items-center flex-col  w-full justify-center p-6 border-t border-solid border-slate-200 rounded-b">

@@ -6,12 +6,14 @@ import authService from "../../../services/auth.service";
 import OrderPreview from "../../modal/OrderPreview";
 
 function ListOrderHistory({ order,setLoading }) {
-  const { address, fuel, isAccepted,isCanceled,isDelivered,method,userId,_id} = order;
+  const { location, fuel, isAccepted,isCanceled,isDelivered,method,userId,_id, createdAt} = order;
   const [showModal, setShowModal] = useState(false);
+  const [deliveryAddress, setDeliveryAddress] = useState("");
   const navigate = useNavigate();
   useEffect(()=>{
-    getUserInfo()
+    getUserInfo();
   },[])
+
   
   const [userInfo,setUserInfo] = useState(null);
   const getUserInfo = async () =>{
@@ -81,13 +83,19 @@ function ListOrderHistory({ order,setLoading }) {
   const renderedUserInfo = (userInfo)?   
     <>
     <p className="text-grey-dark font-thin text-sm leading-normal text-white">
-    Name : {userInfo.name}
-  <br />
-   Email : {userInfo.email}
+    <b>Name :</b> {userInfo.name}
   </p>
   <p className="text-grey-dark font-thin text-sm leading-normal text-white">
+    <b>Mobile No :</b> {userInfo.phone}
+  </p>
+  <p className="text-grey-dark font-thin text-sm leading-normal text-white">
+        <b>Delivery Address: </b> {location.address}
+      </p>
+  <p className="text-grey-dark font-thin text-sm leading-normal text-white">
     <br />
-    Mobile No : {userInfo.phone}
+    <b>Ordered Date :</b> {new Date(createdAt).toLocaleDateString()}
+    <br /> 
+    <b>Ordered Time :</b> {new Date(createdAt).toLocaleTimeString()}
   </p>
   <p className="text-grey-dark font-thin text-sm leading-normal text-white">
   </p>
@@ -112,11 +120,10 @@ function ListOrderHistory({ order,setLoading }) {
                      {fuel.diesel.price} ₹/L ( Quantity: {fuel.diesel.quantity} L)
                     </p>
                   </div>:null}
-                  <div className="text-sm   text-white  font-semibold">
-                    <p className="text-sm   text-white font-thin">
-                    Cost : Rs-{(method.cash)?method.cash:method.online.amount}
-                    </p>
-                  </div>
+                  <div className="text-sm text-white font-semibold">
+                  <b className="font-bold">Cost:&nbsp;  </b> <span className="text-[18px]">₹ {method.cash ? method.cash : method.online.amount}</span>
+                </div>
+                  
                 </div>
                 <div className="text-sm  font-semibold">
                 <p className={` ${(isAccepted.status && !isDelivered.status)? " text-[#32CD32] font-bold ": "hidden" }`}>

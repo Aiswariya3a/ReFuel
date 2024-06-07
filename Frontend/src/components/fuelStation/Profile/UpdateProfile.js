@@ -57,7 +57,7 @@ function UpdateProfile(){
       <div className="w-[100%] text-white  h-[100%] justify-center gap-5 lg:w-1/3 items-center flex flex-col flex-wrap overflow-scroll">
         <div className="header">
           <h1 className="text-center text-[54px]">Change Passsword</h1>
-          <p>Please Fill in the old and new Passsword</p>
+          <p className="text-center">Please Fill in the old and new Passsword</p>
         </div>
         <form class="w-full max-w-sm" onSubmit={onHandleSubmit}>
           <div class="gap-3 md:flex md:items-center mb-6 ">

@@ -43,7 +43,7 @@ function OrderHistory(){
     const renderedOrders = (orders)?orders.filter((element)=>{
       const {isAccepted,isCanceled,isDelivered} = element;
       console.log(element)
-      if(!isCanceled.status && !isAccepted.status){
+      if(isCanceled.status && isAccepted.status){
         return null;
       }
       return element
@@ -54,30 +54,30 @@ function OrderHistory(){
       )
   }):null
 
-    useEffect(()=>{
-      if(renderedOrders && renderedOrders.length === 0){
-        toast.warning("There are No Past Order")
-        navigate('../');
-      }
-    },[renderedOrders])
 
     return(
+      <div className="flex flex-col min-h-screen">
       <div
-      className="w-screen h-screen flex flex-col justify-around items-center lg:md:flex-row"
-      style={{
-        backgroundImage: `linear-gradient(45deg,rgba(0,0,0, 0.75),rgba(0,0,0, 0.75)),url(${LoginLight})`,
-        backgroundPosition: `50% 50%`,
-        backgroundSize: `cover`,
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-    <div className="text-white p-3 text-center text-[54px] flex flex-row justify-center items-center gap-3  whitespace-break-spaces font-sans  lg:text-[96px] md:text-[74px] ">
+        className="bg-cover bg-center text-white py-10"
+        style={{ backgroundImage: `linear-gradient(45deg,rgba(0,0,0, 0.75),rgba(0,0,0, 0.75)),url(${LoginLight})` }}
+      >
+        <div className="text-white p-3 text-center text-[54px] flex flex-row justify-center items-center gap-3  whitespace-break-spaces font-sans  lg:text-[96px] md:text-[74px] ">
           <AiOutlineShoppingCart className="text-white"/>
-          <h1>Past Orders</h1>
+        <h1 className="text-center text-4xl font-semibold">Past Orders</h1>
         </div>
-    <div className="w-[100%] h-[100%] justify-center lg:w-[50%]  items-center flex flex-row flex-wrap overflow-scroll">
-      {renderedOrders}
-    </div>
+        </div>
+        
+        <div className="container mx-auto py-8 px-4">
+        {loading ? (
+          <div className="text-center text-white">Loading...</div>
+        ) : renderedOrders ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {renderedOrders}
+          </div>
+        ) : (
+          <div className="text-center text-black text-[34px]">No orders found.</div>
+        )}
+      </div>
     </div>
     )
 }

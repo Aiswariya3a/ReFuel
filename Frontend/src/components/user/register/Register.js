@@ -9,6 +9,7 @@ import {
 } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../../services/auth.service";
+import LoadingScreen from "../../../assets/LoadingScreen";
 import {
     IoPersonOutline 
 } from "react-icons/io5";
@@ -19,6 +20,7 @@ function Register() {
   const [name,setName] = useState("");
   const [phno,setPhno] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const onHandleSignup = async (e) => {
@@ -37,6 +39,15 @@ function Register() {
     }
   };
 
+  useEffect(() => {
+    // Simulate a loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // Adjust the timeout as needed
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const user = AuthService.getCurrentUser();
 
   useEffect(()=>{
@@ -47,17 +58,25 @@ function Register() {
 
   return (
     <>
-    <div className="header">
-      <h1 className="text-center text-[54px]">Register</h1>
-      <p>Register with your email and password</p>
-    </div>
-    <form class="w-full max-w-sm" onSubmit={onHandleSignup}>
-    <div class="md:flex md:items-center mb-6">
-        <div class="md:w-1/3">
-          <label
-            class="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-            for="inline-full-name"
-          >
+          {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <div
+          className="w-screen h-screen flex flex-col justify-center items-center bg-cover bg-center"
+          style={{ backgroundImage: `url(${LoginLight})` }}
+        >
+        <div className="bg-black bg-opacity-75 p-10 rounded-lg">
+          {/* <div className="header text-white"> */}
+            <h1 className="text-center text-[54px]">Register</h1>
+            <p className="text-center text-[14px]">Register with your email and password</p><br></br>
+          
+          <form className="w-full max-w-sm mt-5" onSubmit={onHandleSignup}>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
+                  htmlFor="inline-full-ownername"
+                >
             Name
           </label>
         </div>
@@ -175,6 +194,9 @@ function Register() {
         </button>
       </div>
     </form>
+    </div>
+    </div>
+)}
 </>
   );
 }

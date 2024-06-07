@@ -1,73 +1,111 @@
 import LoginLight from "../../../assets/images/loginLight.jpg";
 import { useEffect, useState } from "react";
-import SimpleMap from "../../map/Simple";
 import AuthService from "../../../services/auth.service";
-import { getDistance } from "geolib";
 import { useNavigate } from "react-router-dom";
-import ListStation from "../../user/order/ListStation";
 import ListOrderHistory from "./ListOrderHistory";
-import { toast } from "react-toastify";
-function OrderHistory(){
-    const [orders,setOrders] = useState(null);
-    const navigate = useNavigate();
-    const user = AuthService.getCurrentUser();
-    const [loading,setLoading] = useState(true);
-    useEffect(()=>{
-      if(!user){
-          navigate('/home')
-      }
-    },[user])
-    
-    const getOrders = async () =>{
-        try {
-          await AuthService.getUserOrders(user.userId).then(
-            (response) => {
-                console.log(response)
-                setOrders(response.data)
-            },
-            (error) => {
-              console.log(error.response.data.message);
-            }
-          );
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    useEffect(()=>{
-        getOrders()
-        setLoading(false);
-    },[loading])
 
-    const renderedOrders = (orders)?orders.map((element)=>{
-        const {isAccepted,isCanceled,isDelivered} = element;
-        return(
-            <ListOrderHistory order={element} setLoading={setLoading}/>
-        )
-    }):null
-    
-    useEffect(()=>{
-      if(renderedOrders && renderedOrders.length === 0){
-        toast.warning("There are No Past Order")
-        navigate('../');
+function OrderHistory() {
+  const [orders, setOrders] = useState(null);
+  const [filteredOrders, setFilteredOrders] = useState(null);
+  const [showPending, setShowPending] = useState(true);
+  const [showDelivered, setShowDelivered] = useState(true);
+  const [showCanceled, setShowCanceled] = useState(true);
+  const [showAccepted, setShowAccepted] = useState(true);
+  const navigate = useNavigate();
+  const user = AuthService.getCurrentUser();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/home');
+    }
+  }, [user, navigate]);
+
+  const getOrders = async () => {
+    try {
+      const response = await AuthService.getUserOrders(user.userId);
+      setOrders(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error.response.data.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
+
+  useEffect(() => {
+    if (orders) {
+      filterOrders();
+    }
+  }, [orders, showPending, showDelivered, showCanceled, showAccepted]);
+
+  const filterOrders = () => {
+    const filtered = orders.filter(order => {
+      const { isAccepted, isDelivered, isCanceled } = order;
+      if (showPending && !isAccepted.status && !isDelivered.status && !isCanceled.status) {
+        return true;
       }
-    },[renderedOrders])
-    return(
+      if (showAccepted && isAccepted.status) {
+        return true;
+      }
+      if (showDelivered && isDelivered.status) {
+        return true;
+      }
+      if (showCanceled && isCanceled.status) {
+        return true;
+      }
+      return false;
+    });
+    setFilteredOrders(filtered);
+  };
+
+  const renderedOrders = filteredOrders
+    ? filteredOrders
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map((element) => (
+          <ListOrderHistory key={element._id} order={element} setLoading={setLoading} />
+        ))
+    : null;
+
+  return (
+    <div className="flex flex-col min-h-screen">
       <div
-      className="w-screen h-screen flex flex-col justify-around items-center lg:md:flex-row"
-      style={{
-        backgroundImage: `linear-gradient(45deg,rgba(0,0,0, 0.75),rgba(0,0,0, 0.75)),url(${LoginLight})`,
-        backgroundPosition: `50% 50%`,
-        backgroundSize: `cover`,
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-    <div className="text-white p-3 text-center text-[54px] flex flex-row justify-center items-center gap-3  whitespace-break-spaces font-sans  lg:text-[96px] md:text-[74px] ">
-          <h1>Past Orders</h1>
+        className="bg-cover bg-center text-white py-10"
+        style={{ backgroundImage: `linear-gradient(45deg,rgba(0,0,0, 0.75),rgba(0,0,0, 0.75)),url(${LoginLight})` }}
+      >
+        <h1 className="text-center text-4xl font-semibold">Past Orders</h1>
+        <div className="flex justify-center space-x-4 mt-4">
+        <Checkbox label="Accepted" checked={showAccepted} onChange={() => setShowAccepted(!showAccepted)} />
+          <Checkbox label="Pending" checked={showPending} onChange={() => setShowPending(!showPending)} />
+          <Checkbox label="Delivered" checked={showDelivered} onChange={() => setShowDelivered(!showDelivered)} />
+          <Checkbox label="Canceled" checked={showCanceled} onChange={() => setShowCanceled(!showCanceled)} />
         </div>
-    <div className="w-[100%] h-[100%] justify-center lg:w-[50%]  items-center flex flex-row flex-wrap overflow-scroll">
-      {renderedOrders}
+      </div>
+      <div className="container mx-auto py-8 px-4">
+        {loading ? (
+          <div className="text-center text-white">Loading...</div>
+        ) : renderedOrders ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {renderedOrders}
+          </div>
+        ) : (
+          <div className="text-center text-black text-[34px]">No orders found.</div>
+        )}
+      </div>
     </div>
-    </div>
-    )
+  );
 }
+
+function Checkbox({ label, checked, onChange }) {
+  return (
+    <label className="flex items-center text-lg">
+      <input type="checkbox" checked={checked} onChange={onChange} className="mr-2" />
+      {label}
+    </label>
+  );
+}
+
 export default OrderHistory;

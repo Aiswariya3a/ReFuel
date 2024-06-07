@@ -13,6 +13,9 @@ import { IoPersonOutline } from "react-icons/io5";
 import { BiMapAlt } from "react-icons/bi";
 import Modal from "../../modal/Modal";
 import authService from "../../../services/auth.service";
+import LoadingScreen from "../../../assets/LoadingScreen"; // Adjust the path as necessary
+import { toast } from "react-toastify";
+
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showconfirmPassword, setShowConfirmPassword] = useState(false);
@@ -24,7 +27,9 @@ function Register() {
   const [location, setLocation] = useState({});
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const fuelUser = AuthService.getCurrentFuelStation();
+
   const onHandleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -38,7 +43,7 @@ function Register() {
       ).then(
         (response) => {
           console.log(response.data);
-          navigate("/fuelStation/auth/login");
+          toast.success(response.data.message)
         },
         (error) => {
           console.log(error.response.data.message);
@@ -49,202 +54,220 @@ function Register() {
     }
   };
 
-  useEffect(()=>{
-    if(fuelUser){
-        navigate('/seller/')
+  useEffect(() => {
+    if (fuelUser) {
+      navigate("/seller/");
     }
-  },[fuelUser])
+  }, [fuelUser]);
+
+  useEffect(() => {
+    // Simulate a loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // Adjust the timeout as needed
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
-      <div className="header">
-        <h1 className="text-center text-[54px]">Register</h1>
-        <p>Register with your email and password</p>
-      </div>
-      <form className="w-full max-w-sm" onSubmit={onHandleSignup}>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="inline-full-ownername"
-            >
-              Station Name
-            </label>
-          </div>
-          <div className="md:w-2/3">
-            <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-name"
-              type="text"
-              value={name}
-              required
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              placeholder="Station Name"
-            />
-          </div>
-        </div>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="inline-full-ownername"
-            >
-              Owner Name
-            </label>
-          </div>
-          <div className="md:w-2/3">
-            <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-name"
-              type="text"
-              value={owner}
-              required
-              onChange={(e) => {
-                setOwner(e.target.value);
-              }}
-              placeholder="First Middle Last"
-            />
-          </div>
-        </div>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="inline-full-email"
-            >
-              Email
-            </label>
-          </div>
-          <div className="md:w-2/3">
-            <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-email"
-              type="email"
-              value={email}
-              required
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              placeholder="abc@gmail.com"
-            />
-          </div>
-        </div>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="inline-full-phno"
-            >
-              Phno
-            </label>
-          </div>
-          <div className="md:w-2/3">
-            <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-phno"
-              type="text"
-              value={phno}
-              minLength={10}
-              maxLength={13}
-              required
-              onChange={(e) => {
-                setPhno(e.target.value);
-              }}
-              placeholder="+91XXXXXXXXX"
-            />
-          </div>
-        </div>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="block  text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="inline-password"
-            >
-              Password
-            </label>
-          </div>
-          <div className="md:w-2/3 relative flex flex-row">
-            <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 pr-7 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-password"
-              type={`${showPassword ? "text" : "password"}`}
-              placeholder="******************"
-              minLength={8}
-              required
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-            {showPassword ? (
-              <AiOutlineEyeInvisible
-                className="absolute top-3 right-2 text-xl text-black"
-                onClick={() => {
-                  setShowPassword(false);
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <div
+          className="w-screen h-screen flex flex-col justify-center items-center bg-cover bg-center"
+          style={{ backgroundImage: `url(${LoginLight})` }}
+        >
+        <div className="bg-black bg-opacity-75 p-10 rounded-lg">
+          {/* <div className="header text-white"> */}
+            <h1 className="text-center text-[54px]">Register</h1>
+            <p className="text-center text-[14px]">Register with your email and password</p><br></br>
+          
+          <form className="w-full max-w-sm mt-5" onSubmit={onHandleSignup}>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
+                  htmlFor="inline-full-ownername"
+                >
+                  Station Name
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  id="inline-full-name"
+                  type="text"
+                  value={name}
+                  required
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  placeholder="Station Name"
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
+                  htmlFor="inline-full-ownername"
+                >
+                  Owner Name
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  id="inline-full-name"
+                  type="text"
+                  value={owner}
+                  required
+                  onChange={(e) => {
+                    setOwner(e.target.value);
+                  }}
+                  placeholder="First Middle Last"
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
+                  htmlFor="inline-full-email"
+                >
+                  Email
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  id="inline-full-email"
+                  type="email"
+                  value={email}
+                  required
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  placeholder="abc@gmail.com"
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
+                  htmlFor="inline-full-phno"
+                >
+                  Phone Number
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  id="inline-full-phno"
+                  type="text"
+                  value={phno}
+                  minLength={10}
+                  maxLength={13}
+                  required
+                  onChange={(e) => {
+                    setPhno(e.target.value);
+                  }}
+                  placeholder="+91XXXXXXXXX"
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
+                  htmlFor="inline-password"
+                >
+                  Password
+                </label>
+              </div>
+              <div className="md:w-2/3 relative flex flex-row">
+                <input
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 pr-7 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  id="inline-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="******************"
+                  minLength={8}
+                  required
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                {showPassword ? (
+                  <AiOutlineEyeInvisible
+                    className="absolute top-3 right-2 text-xl text-black"
+                    onClick={() => {
+                      setShowPassword(false);
+                    }}
+                  />
+                ) : (
+                  <AiOutlineEye
+                    className="absolute top-3 right-2 text-xl text-black"
+                    onClick={() => {
+                      setShowPassword(true);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
+                  htmlFor="inline-location"
+                >
+                  Location
+                </label>
+              </div>
+              <div className="md:w-2/3 relative flex flex-row">
+                <button
+                  className="bg-transparent hover:bg-[#F59337] font-semibold hover:text-white py-2 px-4 border border-[#fe6f2b] hover:border-transparent text-white py-2 px-4 rounded"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowModal(!showModal);
+                  }}
+                >
+                  Show Map
+                </button>
+                {showModal ? (
+                  <Modal
+                    setOnCancel={() => {
+                      setShowModal(false);
+                    }}
+                    setOnSubmit={(pointer) => {
+                      setLocation(pointer);
+                      setShowModal(false);
+                    }}
+                  />
+                ) : null}
+              </div>
+            </div>
+            <div className="actions w-full flex flex-col gap-4">
+              <button className="bg-[#fe6f2b] hover:bg-[#F59337] text-white font-bold py-2 px-4 rounded-full">
+                Sign Up
+              </button>
+              <button
+                className="bg-transparent border border-[#fe6f2b] hover:bg-[#F59337] text-white font-bold py-2 px-4 rounded-full"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("../login");
                 }}
-              />
-            ) : (
-              <AiOutlineEye
-                className="absolute top-3 right-2 text-xl  text-black"
-                onClick={() => {
-                  setShowPassword(true);
-                }}
-              />
-            )}
-          </div>
+              >
+                Login
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="block  text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-              for="inline-location"
-            >
-              Location
-            </label>
-          </div>
-          <div className="md:w-2/3 relative flex flex-row">
-            <button
-              className=" bg-transparent hover:bg-[#F59337] font-semibold hover:text-white py-2 px-4 border border-[#fe6f2b] hover:border-transparent text-white  py-2 px-4 rounded"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowModal(!showModal);
-              }}
-            >
-              Show Map
-            </button>
-            {showModal ? (
-              <Modal
-                setOnCancel={() => {
-                  setShowModal(false);
-                }}
-                setOnSubmit={(pointer) => {
-                  setLocation(pointer);
-                  setShowModal(false);
-                }}
-              />
-            ) : null}
-          </div>
         </div>
-        <div className="actions w-full flex flex-col gap-4">
-          <button 
-          className="bg-[#fe6f2b] hover:bg-[#F59337] text-white font-bold py-2 px-4 rounded-full"
-          >
-            Sign Up
-          </button>
-          <button 
-          className="bg-transparent border border-[#fe6f2b] hover:bg-[#F59337] text-white font-bold py-2 px-4 rounded-full"
-           
-           onClick={((e)=>{
-                e.preventDefault();
-                navigate('../login')
-              })}
-          >
-            Login
-          </button>
-        </div>
-      </form>
+      )}
     </>
   );
 }
+
 export default Register;

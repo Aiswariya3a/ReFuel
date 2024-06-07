@@ -2,35 +2,32 @@ import { useState } from "react";
 import SimpleMap from "../map/Simple";
 
 function OrderPreview({order,setOnCancel,setOnApply,setOnClose,userInfo,setOnDelivery,disable=false}){
-  const {address, fuel, isAccepted,isCanceled,isDelivered,method,userId} = order;
+  const {location, fuel, isAccepted,isCanceled,isDelivered,method,userId} = order;
   const {name,phone,emailId}=userInfo    
-  const [pointer,setPointer] = useState({
-    lat:
-    20.9027072,
-    lng:
-    77.758464})
+  const [pointer,setPointer] = useState(location)
     const renderedOrderInfo = <>
     <div className="place-self-start">
     {(fuel.petrol)?
   
                     <div className="text-sm  text-black font-semibold">
                       <p>Petrol : </p>
-                      <p className="text-sm text-black  font-thin">
-                        {fuel.petrol.price} ₹/L ( Quantity: {fuel.petrol.quantity} L)
+                      <p className="text-sm text-black font-bold">
+                      ₹ {fuel.petrol.price}  ( Quantity: {fuel.petrol.quantity} L)
                       </p>
                     </div>:null}
-                    <br/>
                     {(fuel.diesel)?
                     <div className="text-sm   text-black font-semibold">
                       <p>Diesel : </p>
-                      <p className="text-sm text-black  font-thin">
-                       {fuel.diesel.price} ₹/L ( Quantity: {fuel.diesel.quantity} L)
+                      <p className="text-sm text-black  font-bold">
+                      ₹ {fuel.diesel.price}  ( Quantity: {fuel.diesel.quantity} L)
                       </p>
                     </div>:null}
+                    <br></br>
                     <div className="text-sm   text-black  font-semibold">
-                      <p className="text-sm   text-black font-thin">
-                      Cost : Rs-{(method.cash)?method.cash:method.online.amount}
-                      </p>
+                    Cost :&nbsp;
+                      <span className="text-xl   text-black font-bold">
+                       ₹ {(method.cash)?method.cash:method.online.amount}
+                      </span>
                     </div>
                   </div>
                   <div className="text-sm  font-semibold">

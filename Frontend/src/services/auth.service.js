@@ -117,12 +117,12 @@ const getFuelStationByID = (id) => {
     });
 };
 
-const postOrder = (userId,stationId,address,fuel,method) =>{
+const postOrder = (userId,stationId,location,fuel,method) =>{
   return axios
   .post(API_URL + `order/`,{
     userId,
     stationId,
-    address,
+    location,
     fuel,
     method
   })

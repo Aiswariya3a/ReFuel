@@ -95,27 +95,22 @@ function UpdateFuel() {
       }}
     >
       <div className="text-white p-3 text-center text-[54px] flex flex-row justify-center items-center gap-3  whitespace-break-spaces font-sans  lg:text-[96px] md:text-[74px] ">
-        <MdOutlineInventory2/>
-        <h1>Inventory</h1>
+        <MdOutlineInventory2 className="text-[#fe6f2b] text-[74px] animate-pulse"/>
+        <h1 className="text-center text-[74px] font-bold">Inventory</h1>
       </div>
-      <div className="w-[100%] text-white  h-[100%] justify-center gap-5 lg:w-1/2 items-center flex flex-col flex-wrap overflow-scroll">
-        <div className="header">
-          <h1 className="text-center text-[54px]">Update Quantity</h1>
+      <div className="flex flex-col text-white justify-evenly items-center gap-5 lg:w-[30%] bg-[#282828] p-8 rounded-lg shadow-lg">
+        <div className="header mb-6">
+          <h1 className="text-center text-[36px] font-bold">Update Quantity</h1>
           <p>Please Fill in the new quantity of Petrol and Diesel</p>
         </div>
-        <form class="w-full max-w-sm" onSubmit={onHandleSubmit}>
-          <div class="gap-3 md:flex md:items-center mb-6 ">
-            <div class="mb-3 lg:mb-0">
-              <label
-                class="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-                for="inline-petrol"
-              >
-                Petrol 
-              </label>
-            </div>
-            <div class="mb-3 lg:mb-0">
+        <form className="w-full" onSubmit={onHandleSubmit}>
+        <div className="mb-6">
+            <label className="block text-white font-bold mb-2" htmlFor="petrol">
+              Petrol Quantity&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;Price
+            </label>
+            <div className="flex flex-row gap-4">
               <input
-                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 id="inline-petrol"
                 type="number"
                 value={petrolQuantity}
@@ -125,10 +120,9 @@ function UpdateFuel() {
                 }}
                 placeholder="Quantity"
               />
-            </div>
-            <div class="">
-              <input
-                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+<input
+                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus
+                :border-purple-500"
                 id="inline-petrol"
                 type="number"
                 value={petrolPrice}
@@ -140,18 +134,13 @@ function UpdateFuel() {
               />
             </div>
           </div>
-     <div class="gap-3 md:flex md:items-center mb-6 ">
-            <div class="mb-3 lg:mb-0">
-              <label
-                class="block text-white font-bold md:text-right mb-1 md:mb-0 pr-4"
-                for="inline-diesel"
-              >
-                Diesel 
-              </label>
-            </div>
-            <div class="mb-3 lg:mb-0">
+          <div className="mb-6">
+            <label className="block text-white font-bold mb-2" htmlFor="diesel">
+              Diesel Quantity&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;Price
+            </label>
+            <div className="flex flex-row gap-4">
               <input
-                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 id="inline-diesel"
                 type="number"
                 value={dieselQuantity}
@@ -161,8 +150,6 @@ function UpdateFuel() {
                 }}
                 placeholder="Quantity"
               />
-            </div>
-            <div class="">
               <input
                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 id="inline-diesel"
@@ -176,6 +163,7 @@ function UpdateFuel() {
               />
             </div>
           </div>
+
           <div className="actions flex flex-col gap-4">
             <button
               className="bg-[#fe6f2b] hover:bg-[#F59337] text-white font-bold py-2 px-4 rounded-full"

@@ -3,7 +3,6 @@ import SimpleMap from "../map/Simple";
 
 function Modal({setOnCancel,setOnSubmit}){
     const [pointer,setPointer] = useState({});
-
     return(
         <>
           <div
@@ -13,7 +12,7 @@ function Modal({setOnCancel,setOnSubmit}){
               {/*content*/}
               <div className="border-0 h-[100%] lg:h-[90%] md:h-[90%] rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*body*/}
-                <div className="relative p-6 flex-auto h-[100%]">
+                <div className="relative p-6 flex-auto h-[100%] w-[100%]">
                   <SimpleMap pointer={pointer} setPointer={setPointer}/>
                 </div>
                 {/*footer*/}
