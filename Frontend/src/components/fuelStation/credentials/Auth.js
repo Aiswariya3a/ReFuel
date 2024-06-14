@@ -26,7 +26,6 @@ function Auth() {
   return (
     <div className="min-h-screen  bg-[#252422] flex flex-col lg:flex-row justify-evenly items-center">
       <div className="h-[45%]">
-        <img src={authImage} alt={"Auth Image"} />
       </div>
       <div className="text-white flex flex-col gap-10">
         <Outlet/>
