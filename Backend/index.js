@@ -13,7 +13,9 @@ app.use(cors());
 app.use(express.json());
 dotenv.config();
 dbconnect();
-
+app.use(cors({
+    origin: 'https://re-fuel.vercel.app' // Allow requests from this origin
+  }));
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 're-fuel.vercel.app');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
