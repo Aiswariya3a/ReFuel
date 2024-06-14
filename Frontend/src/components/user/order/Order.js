@@ -44,6 +44,7 @@ function Order() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          console.log(latitude + " " + longitude);
           setPointer({ lat: latitude, lng: longitude });
           fetchAddress(latitude, longitude); // Pass coordinates directly
         },
