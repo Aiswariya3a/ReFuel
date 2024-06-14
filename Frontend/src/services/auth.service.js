@@ -1,8 +1,5 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-
-const API_URL = "https://api.render.com/deploy/srv-cplsm9aju9rs738g10kg?key=05DBNhAQ_qs";
-
 const signup = (email, password,name,phone) => {
   return axios
     .post(API_URL + "user/signup", {
