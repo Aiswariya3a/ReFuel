@@ -1,5 +1,4 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import authImage from "../../../assets/images/AuthFuelStation.gif";
 import { useEffect, useState } from "react";
 import {
     AiOutlineMail,
