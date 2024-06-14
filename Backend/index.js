@@ -17,9 +17,10 @@ app.use(cors({
     origin: 'https://re-fuel.vercel.app' // Allow requests from this origin
   }));
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 're-fuel.vercel.app');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+    // Allow requests only from 'https://re-fuel.vercel.app'
+    res.setHeader('Access-Control-Allow-Origin', 'https://re-fuel.vercel.app');
     next();
 });
 
