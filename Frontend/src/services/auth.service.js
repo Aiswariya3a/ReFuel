@@ -1,5 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+
+const API_URL="https://refuel.onrender.com";
 const signup = (email, password,name,phone) => {
   return axios
     .post(API_URL + "user/signup", {
